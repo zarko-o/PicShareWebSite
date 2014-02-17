@@ -38,13 +38,6 @@ public partial class Show : System.Web.UI.Page
         base.CreateChildControls();
 
         string dir = Request.QueryString["dir"];
-        if (String.IsNullOrEmpty(dir))
-        {
-            //show a little bit of help
-            Response.Write("?dir=xxxxxx");
-            return;
-        }
-
         string imagePath = HttpContext.Current.Server.MapPath(dir);
         string[] images = FindFilesFromDir(imagePath, new[] { ".jpg", ".jpeg", ".gif", ".tiff", ".bmp", ".png" });
         var pageTopArea = FindControl("Buttons");
@@ -65,6 +58,14 @@ public partial class Show : System.Web.UI.Page
                     pageTopArea.Controls.Add(new LiteralControl("<br />"));
                 }
             }
+
+            if (String.IsNullOrEmpty(dir))
+            {
+                //show a little bit of help
+                pageTopArea.Controls.Add(new Label { Text = "Help> Specify image directory in this way: ?dir=xxxxxx" });
+                return;
+            }
+            
         }
 
         //download button
