@@ -16,7 +16,7 @@ public partial class Show : System.Web.UI.Page
         string download = Request.QueryString["download"];
         if (String.IsNullOrEmpty(dir) || String.IsNullOrEmpty(download) || !download.Equals("all", StringComparison.CurrentCultureIgnoreCase))
             return;
-
+        
         //create zip file from image folder
         string sourceDir = HttpContext.Current.Server.MapPath(dir);
         string dirName = Path.GetFileName(sourceDir);//strange to have GetFileName hier because it returns name of folder.
@@ -26,7 +26,7 @@ public partial class Show : System.Web.UI.Page
             File.Delete(targetFile);
         System.IO.Compression.ZipFile.CreateFromDirectory(sourceDir, targetFile); //make zip file!
         
-        //send created zip file to response
+        //send created zip file to response, for user to download
         Response.ContentType = "application/octet-stream";
         Response.AppendHeader("Content-Disposition", String.Format("attachment; filename={0}.zip", dirName));
         Response.TransmitFile(targetFile);
